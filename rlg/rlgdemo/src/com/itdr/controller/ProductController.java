@@ -24,9 +24,6 @@ public class ProductController extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       request.setCharacterEncoding("UTF-8");
-       response.setContentType("text/html;charset=UTF-8");
-
         ResponseCode rs = null;
         String pathInfo = request.getPathInfo();
         String path = PathUtil.getPath(pathInfo);
@@ -42,23 +39,21 @@ public class ProductController extends HttpServlet {
                 break;
             case "set_sale_status":
                 rs = setSale(request);
+                break;
+            case "save":
+                rs = saveDo(request);
+                break;
+            default:
+                rs.setStatus(404);
+                rs.setMag("请求错误，找不到网页");
+                break;
         }
         response.getWriter().write(rs.toString());
     }
 
 
-
-
     //用户列表
     private ResponseCode listDo(HttpServletRequest request){
-
-        HttpSession session = request.getSession();
-        Users user =(Users) session.getAttribute("user");
-        if (user==null){
-            rs.setStatus(10);
-            rs.setMag("用户未登录，请登录");
-            return rs;
-        }
         String pageNum = request.getParameter("pageNum");
         String pageSize = request.getParameter("pageSize");
         rs = ps.selectAll(pageSize,pageNum);
@@ -66,48 +61,48 @@ public class ProductController extends HttpServlet {
     }
     //用户搜索
     private ResponseCode searchDo(HttpServletRequest request) {
-
-        HttpSession session = request.getSession();
-        Users user =(Users) session.getAttribute("user");
-        if (user==null){
-            rs.setStatus(10);
-            rs.setMag("用户未登录，请登录");
-            return rs;
-        }
-//商品名字的模糊查询
         String productName = request.getParameter("productName");
         String producId = request.getParameter("producId");
         rs = ps.selectOne(productName,producId);
 
         return rs;
     }
+    //商品详情
     private ResponseCode detailDo(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Users user =(Users) session.getAttribute("user");
-        if (user==null){
-            rs.setStatus(10);
-            rs.setMag("用户未登录，请登录");
-            return rs;
-        }
-        String productName = request.getParameter("productName");
         String producId = request.getParameter("producId");
-        rs = ps.selectOne(productName,producId);
+        rs = ps.detailOne(producId);
 
         return rs;
     }
     //用户上下架
     private ResponseCode setSale(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Users user =(Users) session.getAttribute("user");
-        if (user==null){
-            rs.setStatus(10);
-            rs.setMag("用户未登录，请登录");
-            return rs;
-        }
         String status = request.getParameter("status");
         String producId = request.getParameter("producId");
         rs = ps.setsale(status,producId);
 
         return rs;
     }
+    //新增,更新产品
+    private ResponseCode saveDo(HttpServletRequest request) {
+//        categoryId=1&name=海尔空调&subtitle=海尔大促销&
+//        subImages=test.jpg,11.jpg,2.jpg,3.jpg&detail=detailtext&price=1000&stock=100&status=1
+        String pid = request.getParameter("pid");
+        String categoryId = request.getParameter("categoryId");
+        String price = request.getParameter("price");
+        String pname = request.getParameter("pname");
+        String mainImage = request.getParameter("mainImage");
+        String stats =request.getParameter("stats");
+        String cuxiao = request.getParameter("cuxiao");
+        if (pid==null ){
+            //新增
+            rs = ps.xinzeng(categoryId ,price,pname, mainImage
+            ,stats,cuxiao);
+        }else {
+           //更新
+            rs= ps.gengxin(pid,categoryId ,price,pname, mainImage
+                    ,stats,cuxiao);
+        }
+        return rs;
+    }
+    //图片
 }

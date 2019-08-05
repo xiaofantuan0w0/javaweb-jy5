@@ -39,8 +39,6 @@ public class ResponseCode<T> {
                 ",Mag:"+this.getMag();
         return a;
     }
-
-
     //是否成功，成功返回状态码和成功获取的数据，
     // 失败返回状态码和失败的信息
    //  public

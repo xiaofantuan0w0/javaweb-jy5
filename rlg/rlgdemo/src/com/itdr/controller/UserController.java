@@ -24,16 +24,11 @@ public class UserController extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       //处理乱码
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
-
         //创建统一返回对象
         ResponseCode rs = null;
-
         //怎么获取请求路径
         String pathInfo = request.getPathInfo();
-       String path = PathUtil.getPath(pathInfo);
+        String path = PathUtil.getPath(pathInfo);
         //判断一下是什么样的请求
         switch (path){
             case "list":
@@ -45,6 +40,10 @@ public class UserController extends HttpServlet {
             case "disableuser":
                 rs = disableuser(request);
                 break;
+                default:
+                    rs.setStatus(404);
+                    rs.setMag("请求错误，找不到网页");
+                    break;
         }
         response.getWriter().write(rs.toString());
     }
@@ -52,15 +51,6 @@ public class UserController extends HttpServlet {
     //获取所有用户列表需求
     private ResponseCode listDo (HttpServletRequest request){
         ResponseCode rs = new ResponseCode();
-
-        HttpSession session = request.getSession();
-        Users user = (Users) session.getAttribute("user");
-        if (user == null){
-            rs.setStatus(3);
-            rs.setMag("请登录");
-            return rs;
-        }
-
         String pagesize = request.getParameter("pagesize");
         String pagenum = request.getParameter("pagenum");
          rs = us.selectAll(pagesize,pagenum);
@@ -71,7 +61,6 @@ public class UserController extends HttpServlet {
     private ResponseCode logiDo (HttpServletRequest request){
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
         ResponseCode rs = us.selectOne(username,password);
         //获取session对象
         HttpSession session = request.getSession();
@@ -86,6 +75,5 @@ public class UserController extends HttpServlet {
         return rs;
     }
     //根据用户id察看用户详情
-
     //根据用户id求改用户信息
 }
