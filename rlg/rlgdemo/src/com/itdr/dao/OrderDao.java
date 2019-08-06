@@ -8,6 +8,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class OrderDao {
@@ -35,7 +36,7 @@ public class OrderDao {
         }
         return ord;
     }
-
+//订单发货
     public int send_goods(Integer orderNos) {
         QueryRunner qr = new QueryRunner(PoolUtil.getcom());
         String sql = "Update orders set states = 1 where orderNo = ?";
@@ -48,4 +49,6 @@ public class OrderDao {
         }
         return row;
     }
+
+
 }

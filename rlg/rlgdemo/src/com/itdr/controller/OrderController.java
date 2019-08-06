@@ -4,6 +4,7 @@ import com.itdr.common.ResponseCode;
 import com.itdr.service.OrderService;
 import com.itdr.service.ProductService;
 import com.itdr.utils.PathUtil;
+import com.itdr.utils.PropertiesGetUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,8 +40,8 @@ public class OrderController extends HttpServlet {
                 rs = send_goodsDo(request);
                 break;
             default:
-                rs.setStatus(404);
-                rs.setMag("请求错误，找不到网页");
+                rs = ResponseCode.defeats(PropertiesGetUtil.getstatus("CANTFAND_CODE"),
+                        PropertiesGetUtil.getValue("CANTFAND_MSG"));
                 break;
         }
         response.getWriter().write(rs.toString());
@@ -62,9 +63,12 @@ public class OrderController extends HttpServlet {
 
         return rs;
     }
-    //订单详情 ?????!!!!!!
+    //订单详情
     private ResponseCode detailDo(HttpServletRequest request) {
-        return null;
+        String orderNo = request.getParameter("orderNo");
+        rs = os.detailOne(orderNo);
+
+        return rs;
     }
     //订单发货
     private ResponseCode send_goodsDo(HttpServletRequest request) {

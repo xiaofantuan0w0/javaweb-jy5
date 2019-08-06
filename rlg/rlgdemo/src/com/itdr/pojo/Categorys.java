@@ -3,7 +3,7 @@ package com.itdr.pojo;
 public class Categorys {
     private Integer id ;
     private Integer parentId;
-    private String name;
+    private String categoryName;
     private String status;
     private Integer sortOrder;
     private String createTime;
@@ -24,11 +24,11 @@ public class Categorys {
     }
 
     public String getName() {
-        return name;
+        return categoryName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.categoryName = name;
     }
 
     public String getStatus() {
@@ -67,11 +67,11 @@ public class Categorys {
     public String toString() {
         String a = "Pid:"+this.getId()+
                 ",CategoryId:"+this.getParentId()+
-                ",MainImage:"+this.getName()+
-                ",Cuxiao:"+this.getStatus()+
-                ",Pname:"+this.getSortOrder()
-                +",Price:"+this.getCreateTime()+
-                ",Stats:"+this.getUpdateTime();
+                ",categoryName:"+this.getName()+
+                ",status:"+this.getStatus()+
+                ",sortorder:"+this.getSortOrder()
+                +",greatTime:"+this.getCreateTime()+
+                ",updatetime:"+this.getUpdateTime();
         return a;
     }
 }

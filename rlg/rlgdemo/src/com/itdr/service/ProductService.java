@@ -1,16 +1,14 @@
 package com.itdr.service;
 
-import com.itdr.common.Const;
 import com.itdr.common.ResponseCode;
 import com.itdr.dao.ProductDao;
 import com.itdr.pojo.Products;
+import com.itdr.utils.PropertiesGetUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductService {
     ProductDao pd = new ProductDao();
-    ResponseCode rs = new ResponseCode();
 
     //商品列表
     public ResponseCode selectAll(String pageSize,String pageNum) {
@@ -23,104 +21,88 @@ public class ProductService {
 
         List<Products> li = pd.selectAll(pageSize,pageNum);
         if (li ==null){
-            rs.setStatus(00);
-            rs.setMag("数据为空");
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_FAND_CODE")
+                    ,PropertiesGetUtil.getValue("PRODUCT_FAND_MSG"));
         }
-        rs.setStatus(0);
-        rs.setData(li);
-        return rs;
+        return ResponseCode.success(li);
     }
     //商品搜索
     public ResponseCode selectOne(String productName, String producId) {
+        ResponseCode rs = new ResponseCode();
         if (productName == null && producId == null ){
-            rs.setStatus(1);
-            rs.setMag("传入数据为空");
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_NULL_CODE")
+                    ,PropertiesGetUtil.getValue("PRODUCT_NULL_MSG"));
         }
         Products pro = null;
         List<Products> li = null;
         if (producId ==null || producId.equals("")){
           li  = pd.selectnameOne(productName);
-            rs.setData(li);
+            if (li ==null){
+                return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_CANT_CODE")
+                        ,PropertiesGetUtil.getValue("PRODUCT_CANT_MSG"));
+            }
+          rs.setData(li);
         }
         if (productName == null || productName.equals("")){
             pro = pd.selectidOne(producId);
-            rs.setData(pro);
+            if (pro== null){
+                return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_CANT_CODE")
+                        ,PropertiesGetUtil.getValue("PRODUCT_CANT_MSG"));
+            }
+            rs.setData(pro.getPname());
         }
-
-         if (pro== null || li ==null){
-           rs.setStatus(100);
-           rs.setMag("找不到商品");
-           return rs;
-         }
          rs.setStatus(0);
          return rs;
     }
     //商品详情
     public ResponseCode detailOne(String producId) {
         if (producId ==null || producId.equals("")){
-            rs.setStatus(1);
-            rs.setMag("传入数据为空");
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_NULL_CODE")
+            ,PropertiesGetUtil.getValue("PRODUCT_NULL_MSG"));
         }
         Products pro = null;
         pro = pd.detailOne(producId);
         if (pro== null){
-            rs.setStatus(100);
-            rs.setMag("找不到商品");
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_CANT_CODE")
+                    ,PropertiesGetUtil.getValue("PRODUCT_CANT_MSG"));
         }
-        rs.setStatus(0);
-        rs.setData(pro);
-        return rs;
+        return ResponseCode.success(pro);
     }
     //商品上下架
     public ResponseCode setsale(String status, String producId) {
         if (status == null ||status == "" ||producId == ""|| producId == null ){
-            rs.setStatus(1);
-            rs.setMag("传入数据为空");
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_NULL_CODE")
+                    ,PropertiesGetUtil.getValue("PRODUCT_NULL_MSG"));
         }
 
         Products pro = pd.selectidOne(producId);
         if (pro ==null){
-            rs.setStatus(Const.USER_NO_CODE);
-            rs.setMag(Const.USER_NO_MSG);
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("USER_NO_CODE")
+                    ,PropertiesGetUtil.getValue("USER_NO_MSG"));
         }
 
         int row = pd.setsale(producId,status);
         if (row<=0){
-            rs.setStatus(1);
-            rs.setMag("修改产品状态失败");
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_DEFEAT_CODE")
+                    ,PropertiesGetUtil.getValue("PRODUCT_DEFEAT_MSG"));
         }
-        rs.setStatus(0);
-        rs.setData(row);
-        rs.setMag("修改产品状态成功");
-        return rs;
+        return ResponseCode.success("修改产品状态成功",row) ;
     }
     //新增
     public ResponseCode xinzeng(String categoryId, String price, String pname,
                                 String mainImage, String stats, String cuxiao) {
         if (categoryId==""||categoryId == null||price ==""||price==null||pname==""||pname==null||mainImage
                 ==""||mainImage==null||stats==""||stats==null||cuxiao==""||cuxiao==null){
-            rs.setStatus(1);
-            rs.setMag("传入数据为空");
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_NULL_CODE")
+                    ,PropertiesGetUtil.getValue("PRODUCT_NULL_MSG"));
         }
         int row = pd.xinzeng(categoryId ,price,pname, mainImage
                 ,stats,cuxiao);
         if (row<=0){
-            rs.setStatus(1);
-            rs.setMag("新增产品失败");
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_XZ_CODE")
+                    ,PropertiesGetUtil.getValue("PRODUCT_XZ_MSG"));
         }
-        rs.setStatus(0);
-        rs.setData(row);
-        rs.setMag("新增产品成功");
-        return rs;
+        return ResponseCode.success( "新增产品成功",row);
 
     }
     //更新
@@ -128,27 +110,21 @@ public class ProductService {
                                 String pname, String mainImage, String stats, String cuxiao) {
         if (categoryId==""||categoryId == null||price ==""||price==null||pname==""||pname==null||mainImage
                 ==""||mainImage==null||stats==""||stats==null||cuxiao==""||cuxiao==null){
-            rs.setStatus(1);
-            rs.setMag("传入数据为空");
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_NULL_CODE")
+                    ,PropertiesGetUtil.getValue("PRODUCT_NULL_MSG"));
         }
         Products pro = pd.selectidOne(pid);
         if (pro ==null){
-            rs.setStatus(Const.USER_NO_CODE);
-            rs.setMag(Const.USER_NO_MSG);
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("USER_NO_CODE")
+                    ,PropertiesGetUtil.getValue("USER_NO_MSG"));
         }
         int row = pd.gengxin(pid,categoryId ,price,pname, mainImage
                 ,stats,cuxiao);
         if (row<=0){
-            rs.setStatus(1);
-            rs.setMag("更新产品失败");
-            return rs;
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_GX_CODE")
+                    ,PropertiesGetUtil.getValue("PRODUCT_GX_MSG"));
         }
-        rs.setStatus(0);
-        rs.setData(row);
-        rs.setMag("更新产品成功");
-        return rs;
+        return ResponseCode.success("更新产品成功",row);
 
     }
 

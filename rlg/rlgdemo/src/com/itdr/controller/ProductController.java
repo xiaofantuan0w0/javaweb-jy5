@@ -4,6 +4,7 @@ import com.itdr.common.ResponseCode;
 import com.itdr.pojo.Users;
 import com.itdr.service.ProductService;
 import com.itdr.utils.PathUtil;
+import com.itdr.utils.PropertiesGetUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.geom.RectangularShape;
 import java.io.IOException;
 
 @WebServlet(name = "ProductController",value = "/manage/product/*")
@@ -44,8 +46,8 @@ public class ProductController extends HttpServlet {
                 rs = saveDo(request);
                 break;
             default:
-                rs.setStatus(404);
-                rs.setMag("请求错误，找不到网页");
+                rs = ResponseCode.defeats(PropertiesGetUtil.getstatus("CANTFAND_CODE"),
+                        PropertiesGetUtil.getValue("CANTFAND_MSG"));
                 break;
         }
         response.getWriter().write(rs.toString());
@@ -84,8 +86,6 @@ public class ProductController extends HttpServlet {
     }
     //新增,更新产品
     private ResponseCode saveDo(HttpServletRequest request) {
-//        categoryId=1&name=海尔空调&subtitle=海尔大促销&
-//        subImages=test.jpg,11.jpg,2.jpg,3.jpg&detail=detailtext&price=1000&stock=100&status=1
         String pid = request.getParameter("pid");
         String categoryId = request.getParameter("categoryId");
         String price = request.getParameter("price");

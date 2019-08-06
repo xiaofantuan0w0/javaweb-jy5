@@ -18,7 +18,9 @@ public class PropertiesGetUtil {
         String value = ps.getProperty(key);
         return value;
     }
-
+    public static Integer getstatus(String key){
+        return Integer.parseInt(PropertiesGetUtil.getValue(key));
+    }
     public static void main(String[] args) {
         System.out.println(PropertiesGetUtil.getValue("USER_PARAMETER_CODE"));
     }

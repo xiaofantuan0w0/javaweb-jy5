@@ -4,6 +4,7 @@ import com.itdr.common.ResponseCode;
 import com.itdr.pojo.Categorys;
 import com.itdr.service.CategoryService;
 import com.itdr.utils.PathUtil;
+import com.itdr.utils.PropertiesGetUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,17 +41,41 @@ public class CategoryController extends HttpServlet {
                 rs = get_deep_categoryDo(request);
                 break;
             default:
-                rs.setStatus(404);
-                rs.setMag("请求错误，找不到网页");
+                rs = ResponseCode.defeats(PropertiesGetUtil.getstatus("CANTFAND_CODE"),
+                        PropertiesGetUtil.getValue("CANTFAND_MSG"));
                 break;
         }
         response.getWriter().write(rs.toString());
     }
+
+
+
+
     //获得品类子节点
     private ResponseCode get_categoryDo(HttpServletRequest request) {
-        String parentId = request.getParameter("categoryId");
+        String parentId = request.getParameter("parentId");
         rs = cs.get_category(parentId);
 
         return rs;
+    }
+    //增加节点
+    private ResponseCode add_categoryDo(HttpServletRequest request) {
+        String parentId = request.getParameter("parentId");
+        String categoryName = request.getParameter("categoryName");
+        rs = cs.add_category(parentId,categoryName);
+
+        return rs;
+    }
+    //修改品类名称
+    private ResponseCode set_category_nameDo(HttpServletRequest request) {
+        String parentId = request.getParameter("parentId");
+        String categoryName = request.getParameter("categoryName");
+        rs = cs.set_category(parentId,categoryName);
+
+        return rs;
+    }
+    //获取当前分类id及递归子节点categoryId
+    private ResponseCode get_deep_categoryDo(HttpServletRequest request) {
+    return null;
     }
 }

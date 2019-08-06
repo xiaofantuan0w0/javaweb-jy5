@@ -4,6 +4,7 @@ import com.itdr.common.ResponseCode;
 import com.itdr.pojo.Users;
 import com.itdr.service.UserService;
 import com.itdr.utils.PathUtil;
+import com.itdr.utils.PropertiesGetUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,8 +42,8 @@ public class UserController extends HttpServlet {
                 rs = disableuser(request);
                 break;
                 default:
-                    rs.setStatus(404);
-                    rs.setMag("请求错误，找不到网页");
+                    rs = ResponseCode.defeats(PropertiesGetUtil.getstatus("CANTFAND_CODE"),
+                            PropertiesGetUtil.getValue("CANTFAND_MSG"));
                     break;
         }
         response.getWriter().write(rs.toString());

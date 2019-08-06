@@ -40,7 +40,32 @@ public class ResponseCode<T> {
         return a;
     }
     //是否成功，成功返回状态码和成功获取的数据，
+    public static <T> ResponseCode success (Integer status,T data){
+        ResponseCode rs = new ResponseCode();
+        rs.setStatus(status);
+        rs.setData(data);
+        return rs;
+    }
+    public static <T> ResponseCode success (T data){
+        ResponseCode rs = new ResponseCode();
+        rs.setStatus(0);
+        rs.setData(data);
+        return rs;
+    }
+    public static <T> ResponseCode success ( String mag,T data){
+        ResponseCode rs = new ResponseCode();
+        rs.setStatus(0);
+        rs.setData(data);
+        rs.setMag(mag);
+        return rs;
+    };
     // 失败返回状态码和失败的信息
+    public static  ResponseCode defeats (Integer status,String mag){
+        ResponseCode rs = new ResponseCode();
+        rs.setStatus(status);
+        rs.setMag(mag);
+        return rs;
+    }
    //  public
 
 }

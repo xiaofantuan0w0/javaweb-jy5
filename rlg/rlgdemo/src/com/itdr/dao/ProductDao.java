@@ -75,7 +75,7 @@ public class ProductDao {
     //新增
     public int xinzeng(String categoryId, String price, String pname, String mainImage, String stats, String cuxiao) {
         QueryRunner qr = new QueryRunner(PoolUtil.getcom());
-        String sql = "insert into products value(categoryId=?,price=?,pname=?,mainImage=?,stats = ?,cuxiao=?)";
+        String sql = "insert into products values(categoryId=?,price=?,pname=?,mainImage=?,stats = ?,cuxiao=?)";
         Users u =null;
         int row = 0;
         try {
@@ -100,7 +100,4 @@ public class ProductDao {
         }
         return row;
     }
-
-
-
 }
