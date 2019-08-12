@@ -45,31 +45,10 @@ public class UserService {
          return ResponseCode.success(u);
     }
     //禁用用户
-    public ResponseCode selectOne(String uids){
-        if (uids ==null ||uids.equals("")){
-            return ResponseCode.defeats(PropertiesGetUtil.getstatus("USER_PARAMETER_CODE"),
-                    PropertiesGetUtil.getValue("USER_PARAMETER_MSG"));
-        }
+    public ResponseCode disableuser(String uids){
         //字符串转数值
-        Integer uid = null;
-        try {
-           uid = Integer.parseInt(uids);
-        }catch (Exception e){
-            return ResponseCode.defeats(PropertiesGetUtil.getstatus("USER_WROING_CODE"),
-                    PropertiesGetUtil.getValue("USER_WROING_MSG"));
-        }
-        //查找书否有这个用户
-        Users u =  ud.selectOne(uid);
-        //用户为空
-        if (u ==null){
-            return ResponseCode.defeats(PropertiesGetUtil.getstatus("USER_NO_CODE"),
-                    PropertiesGetUtil.getValue("USER_NO_MSG"));
-        }
-        //
-        if (u.getType()!=1){
-            return ResponseCode.defeats(PropertiesGetUtil.getstatus("USER_DISABLE_CODE"),
-                    PropertiesGetUtil.getValue("USER_DISABLE_MSG"));
-        }
+        Integer uid = Integer.parseInt(uids) ;
+
         //禁用用户
         int row = ud.updateByUid(uid);
         if (row<=0){
@@ -78,5 +57,16 @@ public class UserService {
         }
         return ResponseCode.success(row);
     }
-
+    //开启用户
+    public ResponseCode ableuser(String uids) {
+        //字符串转数值
+        Integer uid =uid = Integer.parseInt(uids);
+        //开启用户
+        int row = ud.ableByUid(uid);
+        if (row<=0){
+            return ResponseCode.defeats(PropertiesGetUtil.getstatus("USER_DEFEAT_CODE"),
+                    PropertiesGetUtil.getValue("USER_DEFEAT_MSG"));
+        }
+        return ResponseCode.success(row);
+    }
 }

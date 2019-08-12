@@ -58,7 +58,8 @@ public class ResponseCode<T> {
         rs.setData(data);
         rs.setMag(mag);
         return rs;
-    };
+    }
+
     // 失败返回状态码和失败的信息
     public static  ResponseCode defeats (Integer status,String mag){
         ResponseCode rs = new ResponseCode();

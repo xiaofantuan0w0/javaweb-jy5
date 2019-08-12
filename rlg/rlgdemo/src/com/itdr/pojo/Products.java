@@ -4,10 +4,10 @@ public class Products {
  private Integer pid ;
  private String pname;
  private String mainImage;
+ //下架设计 0  上架 1
  private Integer stats = 0;
- private String cuxiao ;
- private Integer categoryId;
- private Double price;
+ private Integer parentId;
+ private String price;
 
     public Integer getPid() {
         return pid;
@@ -41,39 +41,33 @@ public class Products {
         this.stats = stats;
     }
 
-    public String getCuxiao() {
-        return cuxiao;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setCuxiao(String cuxiao) {
-        this.cuxiao = cuxiao;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
-    @Override
-    public String toString() {
-        String a = "Pid:"+this.getPid()+
-                ",CategoryId:"+this.getCategoryId()+
-                ",MainImage:"+this.getMainImage()+
-                ",Cuxiao:"+this.getCuxiao()+
-                ",Pname:"+this.getPname()
-                +",Price:"+this.getPrice()+
-                ",Stats:"+this.getStats();
-        return a;
-    }
+//    @Override
+//    public String toString() {
+//        return  "{"+
+//                "pid:"+pid+
+//                ",pname:"+pname+
+//                ",mainImage:"+mainImage+
+//                ",cuxiao:"+cuxiao+
+//                ",price:"+price+
+//                ",stats:"+stats+"\'"
+//                +"}";
+//
+//
+//    }
 }

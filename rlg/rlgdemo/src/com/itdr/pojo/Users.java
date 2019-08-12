@@ -5,7 +5,7 @@ public class Users {
     private String uname;
     private String psd;
     private String tel;
-    //普通用户=0；管理员=1
+    //普通用户=0；管理员=1;超级管理员=2
     private Integer type = 0;
     //是否禁用
     private Integer states = 0;
@@ -53,14 +53,15 @@ public class Users {
         this.states = states;
     }
 
-    @Override
-    public String toString() {
-        String a = "uid:"+this.getUid()+
-                ",uname:"+this.getUname()+
-                ",psd:"+this.getPsd()+
-                ",tel:"+this.getTel()+
-                ",type:"+this.getType()
-                +",states:"+this.getStates();
-        return a;
-    }
+//    @Override
+//    public String toString() {
+//        return "{"+
+//                "uid:"+uid+
+//                ",uname:"+uname+
+//                ",psd:"+psd+
+//                ",tel:"+tel+
+//                ",type:"+type +
+//                ",states:"+states+
+//                "\'"+"}";
+//    }
 }

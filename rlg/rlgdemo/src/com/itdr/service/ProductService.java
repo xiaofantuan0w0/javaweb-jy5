@@ -1,6 +1,7 @@
 package com.itdr.service;
 
 import com.itdr.common.ResponseCode;
+import com.itdr.dao.ProductD;
 import com.itdr.dao.ProductDao;
 import com.itdr.pojo.Products;
 import com.itdr.utils.PropertiesGetUtil;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class ProductService {
     ProductDao pd = new ProductDao();
-
+    ProductD pdd = new ProductD();
     //商品列表
     public ResponseCode selectAll(String pageSize,String pageNum) {
         if (pageSize==null || pageSize.equals("")){
@@ -49,7 +50,7 @@ public class ProductService {
                 return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_CANT_CODE")
                         ,PropertiesGetUtil.getValue("PRODUCT_CANT_MSG"));
             }
-            rs.setData(pro.getPname());
+            rs.setData(pro);
         }
          rs.setStatus(0);
          return rs;
@@ -70,17 +71,6 @@ public class ProductService {
     }
     //商品上下架
     public ResponseCode setsale(String status, String producId) {
-        if (status == null ||status == "" ||producId == ""|| producId == null ){
-            return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_NULL_CODE")
-                    ,PropertiesGetUtil.getValue("PRODUCT_NULL_MSG"));
-        }
-
-        Products pro = pd.selectidOne(producId);
-        if (pro ==null){
-            return ResponseCode.defeats(PropertiesGetUtil.getstatus("USER_NO_CODE")
-                    ,PropertiesGetUtil.getValue("USER_NO_MSG"));
-        }
-
         int row = pd.setsale(producId,status);
         if (row<=0){
             return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_DEFEAT_CODE")
@@ -89,15 +79,12 @@ public class ProductService {
         return ResponseCode.success("修改产品状态成功",row) ;
     }
     //新增
-    public ResponseCode xinzeng(String categoryId, String price, String pname,
-                                String mainImage, String stats, String cuxiao) {
-        if (categoryId==""||categoryId == null||price ==""||price==null||pname==""||pname==null||mainImage
-                ==""||mainImage==null||stats==""||stats==null||cuxiao==""||cuxiao==null){
+    public ResponseCode xinzeng(String price , String categoryId, String pname, String stats) {
+        if (categoryId==""||categoryId == null||price ==""||price==null||pname==""||pname==null||stats==""||stats==null){
             return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_NULL_CODE")
                     ,PropertiesGetUtil.getValue("PRODUCT_NULL_MSG"));
         }
-        int row = pd.xinzeng(categoryId ,price,pname, mainImage
-                ,stats,cuxiao);
+        int row = pdd.xinzeng(categoryId,price,pname,stats);
         if (row<=0){
             return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_XZ_CODE")
                     ,PropertiesGetUtil.getValue("PRODUCT_XZ_MSG"));
@@ -106,10 +93,8 @@ public class ProductService {
 
     }
     //更新
-    public ResponseCode gengxin(String pid, String categoryId, String price,
-                                String pname, String mainImage, String stats, String cuxiao) {
-        if (categoryId==""||categoryId == null||price ==""||price==null||pname==""||pname==null||mainImage
-                ==""||mainImage==null||stats==""||stats==null||cuxiao==""||cuxiao==null){
+    public ResponseCode gengxin(String pid, String price , String categoryId , String pname, String stats) {
+        if (categoryId==""||categoryId == null||price ==""||price==null||pname==""||pname==null|| stats==""||stats==null){
             return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_NULL_CODE")
                     ,PropertiesGetUtil.getValue("PRODUCT_NULL_MSG"));
         }
@@ -118,8 +103,7 @@ public class ProductService {
             return ResponseCode.defeats(PropertiesGetUtil.getstatus("USER_NO_CODE")
                     ,PropertiesGetUtil.getValue("USER_NO_MSG"));
         }
-        int row = pd.gengxin(pid,categoryId ,price,pname, mainImage
-                ,stats,cuxiao);
+        int row = pdd.gengxin(pid,price,categoryId,pname,stats); //pd.gengxin(pid,categoryId ,price,pname,stats);
         if (row<=0){
             return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_GX_CODE")
                     ,PropertiesGetUtil.getValue("PRODUCT_GX_MSG"));
@@ -127,6 +111,5 @@ public class ProductService {
         return ResponseCode.success("更新产品成功",row);
 
     }
-
 
 }

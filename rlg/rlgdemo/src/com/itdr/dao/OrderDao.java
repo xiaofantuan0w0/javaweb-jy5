@@ -13,15 +13,16 @@ import java.util.List;
 
 public class OrderDao {
     //订单列表
-    public List<Products> selectAll(String pageSize, String pageNum) {
+    public List<Orders> selectAll(String pageSize, String pageNum) {
         QueryRunner qr = new QueryRunner(PoolUtil.getcom());
         String sql = "select * from orders";
-        List<Products> li = null;
+        List<Orders> li = null;
         try {
-            li = qr.query(sql,new BeanListHandler<Products>(Products.class));
+            li = qr.query(sql,new BeanListHandler<Orders>(Orders.class));
         }catch (Exception e){
             e.printStackTrace();
         }
+        System.out.println(li.get(0));
         return li;
     }
 //订单查询
@@ -39,8 +40,8 @@ public class OrderDao {
 //订单发货
     public int send_goods(Integer orderNos) {
         QueryRunner qr = new QueryRunner(PoolUtil.getcom());
-        String sql = "Update orders set states = 1 where orderNo = ?";
-        Users u =null;
+        String sql = "Update orders set status = 1 where orderNo = ?";
+        Orders u =null;
         int row = 0;
         try {
             row = qr.update(sql,orderNos);

@@ -3,6 +3,7 @@ package com.itdr.controller;
 import com.itdr.common.ResponseCode;
 import com.itdr.service.OrderService;
 import com.itdr.service.ProductService;
+import com.itdr.utils.JsonUtils;
 import com.itdr.utils.PathUtil;
 import com.itdr.utils.PropertiesGetUtil;
 
@@ -22,7 +23,7 @@ public class OrderController extends HttpServlet {
       doGet(request, response);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ResponseCode rs = null;
         String pathInfo = request.getPathInfo();
         String path = PathUtil.getPath(pathInfo);
@@ -44,7 +45,10 @@ public class OrderController extends HttpServlet {
                         PropertiesGetUtil.getValue("CANTFAND_MSG"));
                 break;
         }
-        response.getWriter().write(rs.toString());
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        response.setContentType("text/json;charset=utf-8");
+        response.getWriter().println(JsonUtils.obj2String(rs));
+      //  response.getWriter().write(rs.toString());
     }
 
 

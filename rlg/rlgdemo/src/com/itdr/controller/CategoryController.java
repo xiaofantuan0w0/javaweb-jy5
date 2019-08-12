@@ -1,18 +1,20 @@
 package com.itdr.controller;
 
-import com.itdr.common.ResponseCode;
-import com.itdr.pojo.Categorys;
-import com.itdr.service.CategoryService;
-import com.itdr.utils.PathUtil;
-import com.itdr.utils.PropertiesGetUtil;
+        import com.itdr.common.ResponseCode;
+        import com.itdr.pojo.Categorys;
+        import com.itdr.service.CategoryService;
+        import com.itdr.service.CategorySs;
+        import com.itdr.utils.JsonUtils;
+        import com.itdr.utils.PathUtil;
+        import com.itdr.utils.PropertiesGetUtil;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Locale;
+        import javax.servlet.ServletException;
+        import javax.servlet.annotation.WebServlet;
+        import javax.servlet.http.HttpServlet;
+        import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpServletResponse;
+        import java.io.IOException;
+        import java.util.Locale;
 
 @WebServlet(name = "CategoryController",value = "/manage/category/*")
 public class CategoryController extends HttpServlet {
@@ -20,13 +22,14 @@ public class CategoryController extends HttpServlet {
     ResponseCode rs = new ResponseCode();
     CategoryService cs = new CategoryService();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      doGet(request, response);
+        doGet(request, response);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ResponseCode rs = null;
         String pathInfo = request.getPathInfo();
         String path = PathUtil.getPath(pathInfo);
+        System.out.println(path);
         switch (path){
             case "get_category":
                 rs = get_categoryDo(request);
@@ -45,7 +48,10 @@ public class CategoryController extends HttpServlet {
                         PropertiesGetUtil.getValue("CANTFAND_MSG"));
                 break;
         }
-        response.getWriter().write(rs.toString());
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        response.setContentType("text/json;charset=utf-8");
+        response.getWriter().println(JsonUtils.obj2String(rs));
+        //   response.getWriter().write(rs.toString());
     }
 
 
@@ -76,6 +82,9 @@ public class CategoryController extends HttpServlet {
     }
     //获取当前分类id及递归子节点categoryId
     private ResponseCode get_deep_categoryDo(HttpServletRequest request) {
-    return null;
+        String parentId = request.getParameter("parentId");
+        CategorySs css = new CategorySs();
+        rs =css.get_deep_categoryDo(parentId);
+        return  rs;
     }
 }

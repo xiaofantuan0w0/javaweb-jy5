@@ -6,6 +6,7 @@ import com.itdr.pojo.Categorys;
 import com.itdr.pojo.Users;
 import com.itdr.utils.PropertiesGetUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryService {
@@ -61,5 +62,23 @@ public class CategoryService {
                     ,PropertiesGetUtil.getValue("CATE_GG+MSG"));
         }
         return ResponseCode.success("更新品类成功",row);
+    }
+
+    public ResponseCode get_deep_categoryDo(String parentId) {
+        Integer pid = Integer.parseInt(parentId);
+        List<Categorys> li = new ArrayList<>();
+
+        getAll(pid,li);
+        return ResponseCode.success(li);
+    }
+    private void getAll(Integer pid ,List<Categorys> li){
+        List<Categorys> list = cd.get_deep_categoryDo(pid);
+        if(list !=null && list.size() !=0){
+            for (Categorys cate:list){
+                  li.add(cate);
+                  getAll(cate.getId(),li);
+            }
+        }
+
     }
 }

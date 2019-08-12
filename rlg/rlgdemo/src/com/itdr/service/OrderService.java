@@ -19,7 +19,7 @@ public class OrderService {
             pageNum = "1";
         }
 
-        List<Products> li = od.selectAll(pageSize,pageNum);
+        List<Orders> li = od.selectAll(pageSize,pageNum);
         if (li ==null){
             return ResponseCode.defeats(PropertiesGetUtil.getstatus("PRODUCT_FAND_CODE")
                     ,PropertiesGetUtil.getValue("PRODUCT_FAND_MSG"));
@@ -33,20 +33,14 @@ public class OrderService {
                     ,PropertiesGetUtil.getValue("ORDER_FANDDD_MSG"));
         }
         //字符串转数值
-        Integer orderNos = null;
-        try {
-            orderNos= Integer.parseInt(orderNo);
-        }catch (Exception e){
-            return ResponseCode.defeats(PropertiesGetUtil.getstatus("USER_WROING_CODE")
-                    ,PropertiesGetUtil.getValue("USER_WROING_MSG"));
-        }
+        Integer orderNos = Integer.parseInt(orderNo);
         //查找书否有这个用户
         Orders ord =  od.selectOne(orderNos);
         if (ord ==null){
             return ResponseCode.defeats(PropertiesGetUtil.getstatus("ORDER_NULLDD_CODE")
                     ,PropertiesGetUtil.getValue("ORDER_NULLDD_MSG"));
         }
-        return ResponseCode.success(ord.getStatus());
+        return ResponseCode.success(ord);
     }
      //订单发货
     public ResponseCode send_goods(String orderNo) {
@@ -54,23 +48,9 @@ public class OrderService {
             return ResponseCode.defeats(PropertiesGetUtil.getstatus("ORDER_FANDDD_CODE")
                     ,PropertiesGetUtil.getValue("ORDER_FANDDD_MSG"));
         }
-        Integer orderNos = null;
-        try {
-            orderNos= Integer.parseInt(orderNo);
-        }catch (Exception e){
-            return ResponseCode.defeats(PropertiesGetUtil.getstatus("USER_WROING_CODE")
-                    ,PropertiesGetUtil.getValue("USER_WROING_MSG"));
-        }
+        Integer orderNos = Integer.parseInt(orderNo);
+
         //查找书否有这个用户
-        Orders ord =  od.selectOne(orderNos);
-        if (ord ==null){
-            return ResponseCode.defeats(PropertiesGetUtil.getstatus("ORDER_NULLDD_CODE")
-                    ,PropertiesGetUtil.getValue("ORDER_NULLDD_MSG"));
-        }
-        if (ord.getStatus()!=1){
-            return ResponseCode.defeats(PropertiesGetUtil.getstatus("ORDER_ALREADY_CODE")
-                    ,PropertiesGetUtil.getValue("ORDER_ALREADY_MSG"));
-        }
         int row = od.send_goods(orderNos);
         if (row<=0){
             return ResponseCode.defeats(PropertiesGetUtil.getstatus("ORDER_FH_CODE")

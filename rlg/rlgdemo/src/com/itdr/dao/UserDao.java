@@ -63,4 +63,17 @@ public class UserDao {
         }
         return row;
     }
+   //根据id开启一个用户
+    public int ableByUid(Integer uid) {
+        QueryRunner qr = new QueryRunner(PoolUtil.getcom());
+        String sql = "Update users set states = 0 where uid = ?";
+        Users u =null;
+        int row = 0;
+        try {
+            row = qr.update(sql,uid);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return row;
+    }
 }

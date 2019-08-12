@@ -38,10 +38,11 @@ public class ProductDao {
     //按照id查找
     public Products selectidOne(String producId) {
         QueryRunner qr = new QueryRunner(PoolUtil.getcom());
-        String sql = "select pname from products where pid=?";
+        Integer pidd = Integer.parseInt(producId);
+        String sql = "select * from products where pid=?";
         Products pro = null;
         try {
-            pro = qr.query(sql,new BeanHandler<Products>(Products.class),producId);
+            pro = qr.query(sql,new BeanHandler<Products>(Products.class),pidd);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -50,10 +51,11 @@ public class ProductDao {
     //根据id搜索详情
     public Products detailOne(String producId) {
         QueryRunner qr = new QueryRunner(PoolUtil.getcom());
+        Integer pid = Integer.parseInt(producId);
         String sql = "select * from products where pid=?";
         Products pro = null;
         try {
-            pro = qr.query(sql,new BeanHandler<Products>(Products.class),producId);
+            pro = qr.query(sql,new BeanHandler<Products>(Products.class),pid);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -62,39 +64,41 @@ public class ProductDao {
     //上下架
     public int setsale(String producId,String status) {
         QueryRunner qr = new QueryRunner(PoolUtil.getcom());
+        Integer pid = Integer.parseInt(producId);
+        Integer stats = Integer.parseInt(status);
         String sql = "Update products set stats = ? where pid = ?";
         Users u =null;
         int row = 0;
         try {
-            row = qr.update(sql,status,producId);
+            row = qr.update(sql,stats,pid);
         }catch (Exception e){
             e.printStackTrace();
         }
         return row;
     }
     //新增
-    public int xinzeng(String categoryId, String price, String pname, String mainImage, String stats, String cuxiao) {
+    public int xinzeng(String categoryId, String price, String pname, String stats) {
         QueryRunner qr = new QueryRunner(PoolUtil.getcom());
-        String sql = "insert into products values(categoryId=?,price=?,pname=?,mainImage=?,stats = ?,cuxiao=?)";
+        Integer cateid = Integer.parseInt(categoryId);
+        Integer sta =Integer.parseInt(stats);
+        String sql = "insert into products values(null,?,NULL,?,?,?)";
         Users u =null;
         int row = 0;
         try {
-            row = qr.update(sql,categoryId ,price,pname, mainImage
-                    ,stats,cuxiao);
+            row = qr.update(sql ,pname,sta,cateid,price);
         }catch (Exception e){
             e.printStackTrace();
         }
         return row;
     }
     //更新
-    public int gengxin(String pid, String categoryId, String price, String pname, String mainImage, String stats, String cuxiao) {
+    public int gengxin(String pid, String categoryId, String price, String pname, String stats) {
         QueryRunner qr = new QueryRunner(PoolUtil.getcom());
         String sql = "Update products set categoryId=?,price=?,pname=?,mainImage=?,stats = ?,cuxiao=? where pid = ?";
         Users u =null;
         int row = 0;
         try {
-            row = qr.update(sql,categoryId ,price,pname, mainImage
-                    ,stats,cuxiao,pid);
+            row = qr.update(sql,categoryId ,price,pname,stats,pid);
         }catch (Exception e){
             e.printStackTrace();
         }

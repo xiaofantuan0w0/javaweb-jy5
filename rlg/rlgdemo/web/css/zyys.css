@@ -1,0 +1,114 @@
+#kq,#sj,#fh{
+    background-color: #CCCCCC;
+    color: black;
+    border: 1px black solid;
+}
+#jy,#xj{
+    background-color: black;
+    color: #CCCCCC;
+    border: 1px #CCCCCC solid;
+
+}
+#ct{
+    /*border: 1px red solid;*/
+    background: url("../imgs/ctkj.png") no-repeat;
+    height: 20px;
+    width: 20px;
+}
+#up{
+    height:20px;
+    width: 100px;
+    /*border: 1px yellow solid;*/
+    background: black;
+    color: #CCCCCC;
+}
+/*table*/
+#utable_tou{
+    margin-top: 20px;
+    margin-left: 10px;
+}
+#utable_tou th , #pro_tou th ,#ans_tou th ,#xzbt th ,#gxbt th,#ortou th ,#fls_tou th,#zjjdt th,#dg_tou th,#ddxa1 th{
+    padding: 5px 15px 5px 6px;
+    vertical-align: baseline;
+    background: #CCCCCC;
+    color: black;
+    border-left: 1px black solid;
+    border-right: 1px black solid;
+    border-top: 1px #CCCCCC solid;
+    border-bottom: none;
+}
+#utable_ti td , #pro_ti td ,#ans_ti td ,#xzbs td ,#gxbs td ,#ordti td ,#fls_ti td ,#zjjds td,#dg_ti td,#ddhxa2 td{
+    padding: 6px 15px 6px 6px;
+    margin-left: 10px;
+    vertical-align: text-top;
+    border: 1px #CCCCCC solid;
+    background:black;
+    color: #CCCCCC;
+}
+table{
+    width: 90%;
+}
+/*搜索框*/
+#sps,#spsl2{
+    background: #CCCCCC ;
+    color: black;
+    border: none;
+    height: 25px;
+    width: 200px;
+    margin: 10px 10px 20px 10px;
+    border-radius: 10px;
+}
+#spsaj,#spsaj2{
+    border: 1px #CCCCCC solid;
+    margin: 10px;
+    border-radius: 3px;
+}
+#suk,#ssl，#ssl2,#osuk ,#ddh ,#flk,#ddh1{
+    background: #CCCCCC ;
+    color: black;
+    border: none;
+    height: 25px;
+    width: 200px;
+    margin: 10px 10px 20px 10px;
+    border-radius: 10px;
+}
+#suaj,#ssaj，#ssaj2,#osuaj ,#ddhaj ,#flaj,#ddhaj1{
+    border: 1px #CCCCCC solid;
+    margin: 10px;
+    border-radius: 3px;
+}
+.kkwk{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+span{
+    color: #CCCCCC;
+    margin-top: 10px;
+}
+#xzwk{
+
+}
+/*#xzbt th {*/
+    /*border: 1px black solid;*/
+    /*padding: 5px 15px 5px 6px;*/
+    /*vertical-align: baseline;*/
+
+/*}*/
+#xzbs td input ,#gxbs td input ,#zjjds input{
+    background: none;
+    border: none;
+    height: 100%;
+    width: 100%;
+    color: #CCCCCC;
+}
+
+#xztj,#gxtj,#xgmctj{
+    margin-top: 10px;
+    background: black;
+    border: 1px #CCCCCC solid;
+    color: #CCCCCC;
+    margin-left: 76%;
+}
+#xgid,#xghmc{
+    margin-top: 10px;
+}
